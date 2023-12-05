@@ -7,6 +7,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ApolloDriver } from '@nestjs/apollo';
       synchronize: true,
       fieldResolverEnhancers: ['guards'],
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
