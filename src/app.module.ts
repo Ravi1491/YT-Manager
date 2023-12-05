@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { applicationConfig } from 'config';
 import { Dialect } from 'sequelize';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { join } from 'path';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -17,6 +20,17 @@ import { SequelizeModule } from '@nestjs/sequelize';
       logging: false,
       autoLoadModels: true,
       synchronize: false,
+    }),
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      debug: false,
+      playground: applicationConfig.app.env !== 'base',
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+      },
+      synchronize: true,
+      fieldResolverEnhancers: ['guards'],
     }),
   ],
   controllers: [AppController],
